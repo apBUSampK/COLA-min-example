@@ -7,4 +7,5 @@ find_package(COLA)
 
 add_executable(COLA_min_example main.cpp)
 
-target_include_directories(COLA_min_example PUBLIC ${COLA_INCLUDE_DIR})
+target_link_libraries(COLA_min_example PRIVATE COLAlib)
+
