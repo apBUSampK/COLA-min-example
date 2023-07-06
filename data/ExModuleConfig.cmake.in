@@ -1,0 +1,4 @@
+@PACKAGE_INIT@
+
+include(@CMAKE_INSTALL_PREFIX@/cmake/ExModuleExport.cmake)
+#set_and_check(...), etc.
