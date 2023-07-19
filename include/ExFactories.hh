@@ -5,24 +5,26 @@
 #ifndef COLA_MIN_EXAMPLE_EXFACTORIES_HH
 #define COLA_MIN_EXAMPLE_EXFACTORIES_HH
 
+#include <string>
+
 #include "ExFilters.hh"
 #include "COLA.hh"
 
 class ExGFactory final: public cola::VFactory {
 public:
-    cola::VFilter* create() final;
+    cola::VFilter* create(const std::string) final;
 
 };
 
 class ExCFactory final: public cola::VFactory {
 public:
-    cola::VFilter* create() final;
+    cola::VFilter* create(const std::string) final;
 
 };
 
 class ExWFactory final: public cola::VFactory {
 public:
-    cola::VFilter* create() final;
+    cola::VFilter* create(const std::string) final;
 
 };
 

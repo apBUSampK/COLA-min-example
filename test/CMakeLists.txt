@@ -3,7 +3,7 @@ project(COLA_min_example VERSION 1.0)
 
 set(CMAKE_CXX_STANDARD 14)
 
-# Find neede module package
+# Find needed module package
 find_package(ExModule)
 
 add_executable(COLA_min_example main.cpp)

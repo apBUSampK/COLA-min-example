@@ -1,6 +1,6 @@
 @PACKAGE_INIT@
 
-find_package(COLAlib) #COLA requirement
+find_package(COLAlib REQUIRED) #COLA requirement
 #find_package(ROOT) (additional requirements)
 
 include(@CMAKE_INSTALL_PREFIX@/cmake/ExModuleExport.cmake)

@@ -4,14 +4,14 @@
 
 #include "ExFactories.hh"
 
-cola::VFilter* ExGFactory::create() {
+cola::VFilter* ExGFactory::create(const std::string) {
     return new ExGenerator;
 }
 
-cola::VFilter* ExCFactory::create() {
+cola::VFilter* ExCFactory::create(const std::string) {
     return new ExConverter;
 }
 
-cola::VFilter* ExWFactory::create() {
+cola::VFilter* ExWFactory::create(const std::string) {
     return new ExWriter;
 }

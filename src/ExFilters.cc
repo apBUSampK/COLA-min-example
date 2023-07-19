@@ -9,8 +9,8 @@ std::ostream& operator<<(std::ostream& out, const cola::Particle& data){
                << data.pX << ", " << data.pY << ", " << data.pZ << std::endl;
 }
 
-cola::EventData ExGenerator::operator()() {
-    return cola::EventData{
+std::unique_ptr<cola::EventData> ExGenerator::operator()() {
+    return std::unique_ptr<cola::EventData>( new cola::EventData{
             cola::EventIniState{
                     2212, 2212,
                     10, -10, 2000,
@@ -24,13 +24,13 @@ cola::EventData ExGenerator::operator()() {
                             1, 1, 1
                     }
             }
-    };
+    } );
 }
 
-cola::EventData ExConverter::operator()(cola::EventData data) {
-    return data;
+std::unique_ptr<cola::EventData> ExConverter::operator()(std::unique_ptr<cola::EventData> data) {
+    return std::move(data);
 }
 
-void ExWriter::operator()(cola::EventData data) {
-    std::cout << data.particles[0];
+void ExWriter::operator()(std::unique_ptr<cola::EventData> data) {
+    std::cout << data->particles[0];
 }

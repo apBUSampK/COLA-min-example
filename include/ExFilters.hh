@@ -6,6 +6,7 @@
 #define COLA_MIN_EXAMPLE_EXFILTERS_HH
 
 #include <iostream>
+#include <memory>
 
 #include "COLA.hh"
 
@@ -13,19 +14,19 @@ std::ostream& operator<<(std::ostream& out, const cola::Particle& data);
 
 class ExGenerator final: public cola::VGenerator {
 public:
-    cola::EventData operator()() final;
+    std::unique_ptr<cola::EventData> operator()() final;
 
 };
 
 class ExConverter final: public cola::VConverter {
 public:
-    cola::EventData operator()(cola::EventData data) final;
+    std::unique_ptr<cola::EventData> operator()(std::unique_ptr<cola::EventData> data) final;
 
 };
 
 class ExWriter final: public cola::VWriter {
 public:
-    void operator()(cola::EventData data) final;
+    void operator()(std::unique_ptr<cola::EventData> data) final;
 
 };
 
