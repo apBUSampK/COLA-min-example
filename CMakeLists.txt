@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 3.22)
 project(COLA_ExModule VERSION 1.1)
 
-# c++14 is recommended
-set(CMAKE_CXX_STANDARD 14)
+# c++17 is recommended
+set(CMAKE_CXX_STANDARD 17)
 
 # Find COLA package
-find_package(COLAlib)
+find_package(COLA)
 
 # Include CMake module for config file generation
 include(CMakePackageConfigHelpers)
@@ -28,13 +28,13 @@ target_include_directories(ExModule PUBLIC
 set_target_properties(ExModule PROPERTIES PUBLIC_HEADER include/ExModule.hh)
 
 # Link against COLA
-target_link_libraries(ExModule PUBLIC COLAlib)
+target_link_libraries(ExModule PUBLIC COLA)
 
 # Configure config files
 configure_package_config_file(
         "${PROJECT_SOURCE_DIR}/data/ExModuleConfig.cmake.in"
         "${CMAKE_CURRENT_BINARY_DIR}/ExModuleConfig.cmake"
-        INSTALL_DESTINATION cmake
+        INSTALL_DESTINATION lib/cmake/${COLA_MODULE_NAME}
         #PATH_VARS, etc.
         )
 
@@ -47,7 +47,7 @@ install(TARGETS ExModule
         EXPORT ExModuleExport
         LIBRARY DESTINATION lib/${COLA_MODULE_NAME}
         PUBLIC_HEADER DESTINATION include/${COLA_MODULE_NAME}
-        INCLUDES DESTINATION include/${COLA_MODULE_NAME}) # Necessary for proper EXPORT generation
+        INCLUDES DESTINATION include/${COLA_MODULE_NAME})
 
 # Install includes
 install(DIRECTORY include/
@@ -55,8 +55,9 @@ install(DIRECTORY include/
 
 # Install export file and config files
 install(EXPORT ExModuleExport
-        DESTINATION cmake)
+        DESTINATION lib/cmake/${COLA_MODULE_NAME})
 
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/ExModuleConfig.cmake"
         "${CMAKE_CURRENT_BINARY_DIR}/ExModuleConfigVersion.cmake"
-        DESTINATION cmake)
+        DESTINATION lib/cmake/${COLA_MODULE_NAME})
+

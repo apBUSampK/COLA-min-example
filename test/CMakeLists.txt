@@ -8,4 +8,5 @@ find_package(ExModule)
 
 add_executable(COLA_min_example main.cpp)
 
+target_include_directories(COLA_min_example PRIVATE ${COLA_DIR}/include)
 target_link_libraries(COLA_min_example PRIVATE ExModule)

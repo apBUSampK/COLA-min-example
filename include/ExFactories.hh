@@ -12,19 +12,19 @@
 
 class ExGFactory final: public cola::VFactory {
 public:
-    cola::VFilter* create(const std::string) final;
+    cola::VFilter* create(const std::map<std::string, std::string>&) final;
 
 };
 
 class ExCFactory final: public cola::VFactory {
 public:
-    cola::VFilter* create(const std::string) final;
+    cola::VFilter* create(const std::map<std::string, std::string>&) final;
 
 };
 
 class ExWFactory final: public cola::VFactory {
 public:
-    cola::VFilter* create(const std::string) final;
+    cola::VFilter* create(const std::map<std::string, std::string>&) final;
 
 };
 

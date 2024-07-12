@@ -20,13 +20,13 @@ public:
 
 class ExConverter final: public cola::VConverter {
 public:
-    std::unique_ptr<cola::EventData> operator()(std::unique_ptr<cola::EventData> data) final;
+    std::unique_ptr<cola::EventData> operator()(std::unique_ptr<cola::EventData>&&) final;
 
 };
 
 class ExWriter final: public cola::VWriter {
 public:
-    void operator()(std::unique_ptr<cola::EventData> data) final;
+    void operator()(std::unique_ptr<cola::EventData>&&) final;
 
 };
 

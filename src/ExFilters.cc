@@ -27,10 +27,10 @@ std::unique_ptr<cola::EventData> ExGenerator::operator()() {
     } );
 }
 
-std::unique_ptr<cola::EventData> ExConverter::operator()(std::unique_ptr<cola::EventData> data) {
+std::unique_ptr<cola::EventData> ExConverter::operator()(std::unique_ptr<cola::EventData>&& data) {
     return std::move(data);
 }
 
-void ExWriter::operator()(std::unique_ptr<cola::EventData> data) {
+void ExWriter::operator()(std::unique_ptr<cola::EventData>&& data) {
     std::cout << data->particles[0];
 }
