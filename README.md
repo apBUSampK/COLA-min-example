@@ -1,5 +1,7 @@
 # COLA example module
 
+[![CI](https://github.com/apBUSampK/COLA-min-example/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/apBUSampK/COLA-min-example/actions/workflows/ci.yml)
+
 ## ExModule installation
 
 ```shell

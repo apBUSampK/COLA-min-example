@@ -11,6 +11,11 @@ set(COLA_MODULE ExModule)
 # Find COLA package
 find_package(COLA REQUIRED)
 
+# Include CMake module for config file generation
+include(CMakePackageConfigHelpers)
+# GNUInstallDirs defines CMAKE_INSTALL_LIBDIR, INCLUDEDIR, DATAROOTDIR, etc. (lib vs lib64, share, ...).
+include(GNUInstallDirs)
+
 # Modules can be installed whenever you please, however grouping them all in COLA directory is neat and
 # makes further adjustments to CMAKE_PREFIX_PATH unnecessary. It is also advised to put module files to corresponding
 # directories to avoid pollution.
@@ -19,7 +24,7 @@ set(CMAKE_INSTALL_PREFIX ${COLA_DIR})
 # GNUInstallDirs defines CMAKE_INSTALL_LIBDIR, INCLUDEDIR, DATAROOTDIR, etc. (lib vs lib64, share, ...).
 include(GNUInstallDirs)
 
-# cmake makes the dependencies paths backed into the library
+# cmake makes the dependencies paths baked into the library
 set(CMAKE_BUILD_RPATH_USE_LINK_PATH TRUE)
 
 # optional clang-tidy string
@@ -40,6 +45,7 @@ target_include_directories(
                           $<INSTALL_INTERFACE:include/${COLA_MODULE}>
 )
 
+# Link against COLA
 target_link_libraries(${COLA_MODULE} PUBLIC COLA)
 
 # Set public header and enable clang-tidy
@@ -50,9 +56,6 @@ set_target_properties(
                SOVERSION "${PROJECT_VERSION_MAJOR}"
                CXX_CLANG_TIDY "${COLA_CMAKE_CXX_CLANG_TIDY}"
 )
-
-# Include CMake module for config file generation
-include(CMakePackageConfigHelpers)
 
 # Install library
 install(
@@ -98,5 +101,5 @@ if (BUILD_TESTING)
     add_subdirectory(tests)
 endif ()
 
-# format / tidy targets (from COLA package)
-setup_cola_quality_tools()
+# format and tidy targets (exclude COLA from checks)
+setup_cola_quality_tools(EXCLUDE_PATTERNS ".*/COLA/.*")

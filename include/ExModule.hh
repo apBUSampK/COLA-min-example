@@ -1,3 +1,7 @@
+//
+// Created by apbus_amp_k on 05.07.23.
+//
+
 #ifndef COLA_MIN_EXAMPLE_EXMODULE_HH
 #define COLA_MIN_EXAMPLE_EXMODULE_HH
 
