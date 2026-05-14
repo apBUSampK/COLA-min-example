@@ -12,5 +12,3 @@ _deps
 /build/
 /.idea/
 /cmake-build-debug/
-/test/build/
-/test/cmake-build-debug/

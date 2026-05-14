@@ -1,63 +1,102 @@
-cmake_minimum_required(VERSION 3.22)
-project(COLA_ExModule VERSION 1.1)
+cmake_minimum_required(VERSION 3.14)
 
-# c++17 is recommended
-set(CMAKE_CXX_STANDARD 17)
+project(
+    COLA_ExModule
+    VERSION 1.1.0
+    LANGUAGES CXX
+)
+
+set(COLA_MODULE ExModule)
 
 # Find COLA package
-find_package(COLA)
-
-# Include CMake module for config file generation
-include(CMakePackageConfigHelpers)
+find_package(COLA REQUIRED)
 
 # Modules can be installed whenever you please, however grouping them all in COLA directory is neat and
 # makes further adjustments to CMAKE_PREFIX_PATH unnecessary. It is also advised to put module files to corresponding
 # directories to avoid pollution.
 set(CMAKE_INSTALL_PREFIX ${COLA_DIR})
-set(COLA_MODULE_NAME ExModule)
+
+# GNUInstallDirs defines CMAKE_INSTALL_LIBDIR, INCLUDEDIR, DATAROOTDIR, etc. (lib vs lib64, share, ...).
+include(GNUInstallDirs)
+
+# cmake makes the dependencies paths backed into the library
+set(CMAKE_BUILD_RPATH_USE_LINK_PATH TRUE)
+
+# optional clang-tidy string
+set(COLA_CMAKE_CXX_CLANG_TIDY
+    ""
+    CACHE STRING "Passed to CMAKE_CXX_CLANG_TIDY for ${COLA_MODULE} targets"
+)
 
 # Add library target
-set(srcs src/ExFactories.cc src/ExFilters.cc)
-add_library(ExModule SHARED ${srcs})
+file(GLOB SRCS CONFIGURE_DEPENDS src/*.cc)
+add_library(${COLA_MODULE} SHARED ${SRCS})
 
-target_include_directories(ExModule PUBLIC
-        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
-        $<INSTALL_INTERFACE:include/${COLA_MODULE_NAME}>)
+# allow c++20
+target_compile_features(${COLA_MODULE} PRIVATE cxx_std_20)
 
-# Set public header
-set_target_properties(ExModule PROPERTIES PUBLIC_HEADER include/ExModule.hh)
+target_include_directories(
+    ${COLA_MODULE} PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+                          $<INSTALL_INTERFACE:include/${COLA_MODULE}>
+)
 
-# Link against COLA
-target_link_libraries(ExModule PUBLIC COLA)
+target_link_libraries(${COLA_MODULE} PUBLIC COLA)
+
+# Set public header and enable clang-tidy
+set_target_properties(
+    ${COLA_MODULE}
+    PROPERTIES PUBLIC_HEADER "include/${COLA_MODULE}.hh"
+               VERSION "${PROJECT_VERSION}"
+               SOVERSION "${PROJECT_VERSION_MAJOR}"
+               CXX_CLANG_TIDY "${COLA_CMAKE_CXX_CLANG_TIDY}"
+)
+
+# Include CMake module for config file generation
+include(CMakePackageConfigHelpers)
+
+# Install library
+install(
+    TARGETS ${COLA_MODULE}
+    EXPORT ${COLA_MODULE}Export
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}/${COLA_MODULE}
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${COLA_MODULE}
+    INCLUDES
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${COLA_MODULE}
+)
+
+# Install includes
+install(
+    DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${COLA_MODULE}
+    FILES_MATCHING
+    PATTERN "*.hh"
+)
 
 # Configure config files
 configure_package_config_file(
-        "${PROJECT_SOURCE_DIR}/data/ExModuleConfig.cmake.in"
-        "${CMAKE_CURRENT_BINARY_DIR}/ExModuleConfig.cmake"
-        INSTALL_DESTINATION lib/cmake/${COLA_MODULE_NAME}
-        #PATH_VARS, etc.
-        )
+    "${PROJECT_SOURCE_DIR}/data/${COLA_MODULE}Config.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/${COLA_MODULE}Config.cmake"
+    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${COLA_MODULE}
+)
 
 write_basic_package_version_file(
-        ${CMAKE_CURRENT_BINARY_DIR}/ExModuleConfigVersion.cmake
-        COMPATIBILITY AnyNewerVersion)
-
-# Install library
-install(TARGETS ExModule
-        EXPORT ExModuleExport
-        LIBRARY DESTINATION lib/${COLA_MODULE_NAME}
-        PUBLIC_HEADER DESTINATION include/${COLA_MODULE_NAME}
-        INCLUDES DESTINATION include/${COLA_MODULE_NAME})
-
-# Install includes
-install(DIRECTORY include/
-        DESTINATION include/${COLA_MODULE_NAME})
+    ${CMAKE_CURRENT_BINARY_DIR}/${COLA_MODULE}ConfigVersion.cmake COMPATIBILITY AnyNewerVersion
+)
 
 # Install export file and config files
-install(EXPORT ExModuleExport
-        DESTINATION lib/cmake/${COLA_MODULE_NAME})
+install(EXPORT ${COLA_MODULE}Export DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${COLA_MODULE})
 
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/ExModuleConfig.cmake"
-        "${CMAKE_CURRENT_BINARY_DIR}/ExModuleConfigVersion.cmake"
-        DESTINATION lib/cmake/${COLA_MODULE_NAME})
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${COLA_MODULE}Config.cmake"
+              "${CMAKE_CURRENT_BINARY_DIR}/${COLA_MODULE}ConfigVersion.cmake"
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${COLA_MODULE}
+)
 
+add_subdirectory(bin)
+
+enable_testing()
+if (BUILD_TESTING)
+    add_subdirectory(tests)
+endif ()
+
+# format / tidy targets (from COLA package)
+setup_cola_quality_tools()

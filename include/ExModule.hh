@@ -1,11 +1,18 @@
-//
-// Created by apbus_amp_k on 05.07.23.
-//
-
 #ifndef COLA_MIN_EXAMPLE_EXMODULE_HH
 #define COLA_MIN_EXAMPLE_EXMODULE_HH
 
-#include "ExFactories.hh"
 #include "ExFilters.hh"
 
-#endif //COLA_MIN_EXAMPLE_EXMODULE_HH
+#include <COLA.hh>
+
+namespace cola {
+
+  using ExGeneratorFactory = GenericFactory<ExGenerator>;
+  using ExConverterFactory = GenericFactory<ExConverter>;
+  using ExWriterFactory = GenericFactory<ExWriter>;
+
+  using ExampleModule = GenericModule<ExGeneratorFactory, ExConverterFactory, ExWriterFactory>;
+
+}  // namespace cola
+
+#endif  // COLA_MIN_EXAMPLE_EXMODULE_HH
