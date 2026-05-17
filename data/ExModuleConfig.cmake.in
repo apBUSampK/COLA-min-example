@@ -1,7 +1,8 @@
 @PACKAGE_INIT@
 
-find_package(COLA REQUIRED) # COLA requirement
-#find_package(ROOT) (additional requirements)
+include(CMakeFindDependencyMacro)
+find_dependency(COLA REQUIRED) # COLA requirement
+# find_dependency(ROOT) (additional requirements)
 
-include(@CMAKE_INSTALL_PREFIX@/lib/cmake/ExModule/ExModuleExport.cmake)
+include(@CMAKE_INSTALL_PREFIX@/@CMAKE_INSTALL_LIBDIR@/cmake/ExModule/ExModuleExport.cmake)
 #set_and_check(...), etc.
