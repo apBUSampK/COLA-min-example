@@ -24,9 +24,6 @@ set(CMAKE_INSTALL_PREFIX ${COLA_DIR})
 # GNUInstallDirs defines CMAKE_INSTALL_LIBDIR, INCLUDEDIR, DATAROOTDIR, etc. (lib vs lib64, share, ...).
 include(GNUInstallDirs)
 
-# cmake makes the dependencies paths baked into the library
-set(CMAKE_BUILD_RPATH_USE_LINK_PATH TRUE)
-
 # optional clang-tidy string
 set(COLA_CMAKE_CXX_CLANG_TIDY
     ""
@@ -51,7 +48,9 @@ target_link_libraries(${COLA_MODULE} PUBLIC COLA)
 # Set public header and enable clang-tidy
 set_target_properties(
     ${COLA_MODULE}
-    PROPERTIES PUBLIC_HEADER "include/${COLA_MODULE}.hh"
+    PROPERTIES INSTALL_RPATH_USE_LINK_PATH
+               TRUE # cmake makes the dependencies paths baked into the library
+               PUBLIC_HEADER "include/${COLA_MODULE}.hh"
                VERSION "${PROJECT_VERSION}"
                SOVERSION "${PROJECT_VERSION_MAJOR}"
                CXX_CLANG_TIDY "${COLA_CMAKE_CXX_CLANG_TIDY}"

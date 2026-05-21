@@ -29,7 +29,7 @@ If both COLA and ExModule installed right, on running the you should see:
 
 ```
 Parsing XML file:
-filter name: example_gen
+filter name: example_generator
 params:
 filter name: example_converter
 params:

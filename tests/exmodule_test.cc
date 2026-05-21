@@ -9,7 +9,7 @@ TEST(ExModuleTest, ModuleExposesNamedFactories) {
   cola::ExampleModule module;
   cola::FactoryMap factories = module.GetModuleFilters();
 
-  ASSERT_TRUE(factories.contains("example_gen"));
+  ASSERT_TRUE(factories.contains("example_generator"));
   ASSERT_TRUE(factories.contains("example_converter"));
   ASSERT_TRUE(factories.contains("example_writer"));
 }
@@ -17,7 +17,7 @@ TEST(ExModuleTest, ModuleExposesNamedFactories) {
 TEST(ExModuleTest, ParseAndRunMinimalPipeline) {
   const std::string xml = R"(<?xml version="1.0"?>
 <program>
-    <generator name="example_gen"/>
+    <generator name="example_generator"/>
     <converter name="example_converter"/>
     <writer name="example_writer"/>
 </program>
@@ -36,7 +36,7 @@ TEST(ExModuleTest, GeneratorProducesParticle) {
   cola::MetaProcessor processor(module.GetModuleFilters());
   std::istringstream stream(R"(<?xml version="1.0"?>
 <program>
-    <generator name="example_gen"/>
+    <generator name="example_generator"/>
     <converter name="example_converter"/>
     <writer name="example_writer"/>
 </program>
