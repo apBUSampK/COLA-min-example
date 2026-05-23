@@ -15,7 +15,7 @@ std::ostream& operator<<(std::ostream& out, const cola::Particle& data);
 
 class ExGenerator final : public cola::VGenerator {
  public:
-  static inline const std::string kName = "example_gen";
+  static inline const std::string kName = "example_generator";
 
   std::unique_ptr<cola::EventData> operator()() override;
 };

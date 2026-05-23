@@ -14,35 +14,35 @@ std::ostream& operator<<(std::ostream& out, const cola::Particle& data) {
 
 std::unique_ptr<cola::EventData> ExGenerator::operator()() {
   return std::make_unique<cola::EventData>(cola::EventData{
-      .iniState =
+      .ini_state =
           cola::EventIniState{
-              .pdgCodeA = 2212,
-              .pdgCodeB = 2212,
-              .pZA = 10.0,
-              .pZB = -10.0,
+              .pdg_code_a = 2212,
+              .pdg_code_b = 2212,
+              .p_za = 10.0,
+              .p_zb = -10.0,
               .energy = 2000.0,
-              .sectNN = 34.5F,
+              .sect_nn = 34.5F,
               .b = 0.1F,
-              .nColl = 1,
-              .nCollPP = 1,
-              .nCollPN = 0,
-              .nCollNN = 0,
-              .nPart = 0,
-              .nPartA = 1,
-              .nPartB = 0,
-              .phiRotA = 1.0F,
-              .thetaRotA = 0.0F,
-              .phiRotB = 1.0F,
-              .thetaRotB = 0.0F,
-              .iniStateParticles = {},
+              .num_coll = 1,
+              .num_coll_pp = 1,
+              .num_coll_pn = 0,
+              .num_coll_nn = 0,
+              .num_part = 0,
+              .num_part_a = 1,
+              .num_part_b = 0,
+              .phi_rot_a = 1.0F,
+              .theta_rot_a = 0.0F,
+              .phi_rot_b = 1.0F,
+              .theta_rot_b = 0.0F,
+              .ini_state_particles = {},
           },
       .particles =
           cola::EventParticles{
               cola::Particle{
                   .position = cola::LorentzVector{.e = 0.0, .x = 0.0, .y = 0.0, .z = 0.0},
                   .momentum = cola::LorentzVector{.e = 0.0, .x = 1.0, .y = 1.0, .z = 1.0},
-                  .pdgCode = 0,
-                  .pClass = cola::ParticleClass::kProduced,
+                  .pdg_code = 0,
+                  .p_class = cola::ParticleClass::kProduced,
               },
           },
   });
