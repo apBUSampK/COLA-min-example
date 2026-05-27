@@ -18,8 +18,8 @@ std::unique_ptr<cola::EventData> ExGenerator::operator()() {
           cola::EventIniState{
               .pdg_code_a = 2212,
               .pdg_code_b = 2212,
-              .p_za = 10.0,
-              .p_zb = -10.0,
+              .pz_a = 10.0,
+              .pz_b = -10.0,
               .energy = 2000.0,
               .sect_nn = 34.5F,
               .b = 0.1F,
